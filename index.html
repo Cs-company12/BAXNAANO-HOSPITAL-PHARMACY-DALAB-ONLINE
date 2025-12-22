@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0ea5e9">
+    <title>Baxnaano Hospital & Pharmacy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0ea5e9; --secondary: #8b5cf6; --accent: #f97316;
+            --dark: #1e293b; --light: #f8fafc; --success: #10b981; --danger: #ef4444;
+            --glass: rgba(255, 255, 255, 0.1); --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, var(--light), #e0f2fe);
+            overflow-x: hidden;
+        }
+        img, video { max-width: 100%; height: auto; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-100px, -100px) rotate(360deg); }
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+            50% { box-shadow: 0 30px 50px -5px rgba(14, 165, 233, 0.4); }
+        }
+        @keyframes puls {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(0.97); filter: brightness(1.2); }
+        }
+
+        nav {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
+        }
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            overflow: hidden;
+        }
+        .logo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+        .nav-links a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .mobile-menu-toggle {
+            display: none;
+            color: var(--dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: var(--glass);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .hero {
+            margin-top: 60px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="50" fill="%230ea5e9" opacity="0.1"/><circle cx="800" cy="300" r="80" fill="%238b5cf6" opacity="0.1"/><circle cx="400" cy="700" r="60" fill="%23f97316" opacity="0.1"/></svg>');
+            animation: float 20s infinite linear;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: glow 3s infinite ease-in-out;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease 0.2s both;
+            opacity: 0.9;
+        }
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.4s both;
+            opacity: 0.8;
+        }
+        .btn {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--accent), #ff6b00);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease 0.6s both;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
+            display: inline-block;
+            text-align: center;
+        }
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, var(--primary), #0284c7);
+        }
+        .btn-block { width: 100%; padding: 1rem; }
+
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: var(--dark);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .service-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .service-card:hover {
+            transform: translateY(-15px) rotateX(5deg);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: puls 3s infinite alternate;
+        }
+
+        .pharmacy-section {
+            background: linear-gradient(135deg, #f0f9ff, #f5f3ff);
+        }
+        .medicine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .medicine-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .medicine-card:hover {
+            transform: translateY(-15px) rotateX(5deg) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+        .medicine-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .medicine-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .medicine-content {
+            padding: 1.5rem;
+        }
+        .medicine-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        .medicine-price {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .add-to-cart-btn:hover {
+            background: #059669;
+            transform: translateY(-3px);
+        }
+
+        .cart-container {
+            max-width: 800px;
+            margin: 3rem auto 0;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            transition: background 0.3s;
+        }
+        .cart-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        .cart-total {
+            text-align: right;
+            margin-top: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--dark);
+            padding: 1rem;
+            background: var(--glass);
+            border-radius: 10px;
+        }
+
+        .delivery-form {
+            max-width: 600px;
+            margin: 3rem auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .gallery-section {
+            background: linear-gradient(135deg, #f0f9ff, #f5f3ff);
+        }
+        .gallery-controls {
+            text-align: center;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        .gallery-item {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s;
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .gallery-item:hover {
+            transform: translateY(-15px) rotateX(5deg);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+        .gallery-media {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .gallery-overlay {
+            padding: 1.5rem;
+        }
+
+        footer {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .social-links {
+            margin: 1.5rem 0;
+        }
+        .social-links a {
+            color: white;
+            font-size: 2rem;
+            margin: 0 1rem;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-5px) rotateY(180deg);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--glass);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem;
+            }
+            .nav-links.active { display: flex; }
+            .mobile-menu-toggle { display: block; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero h2 { font-size: 1.5rem; }
+            .section-title { font-size: 2rem; }
+            .gallery-controls { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-img">
+                    <!-- <img src="https://scontent.xx.fbcdn.net/YOUR_LOGO_URL" alt="Baxnaano Hospital"> -->
+                    🏥
+                </div>
+                Baxnaano Hospital
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#pharmacy">Pharmacy</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#delivery">Delivery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Baxnaano Hospital</h1>
+            <h2>Healthcare + Pharmacy</h2>
+            <p>Complete healthcare services with online pharmacy & 2-hour delivery</p>
+            <a href="#services" class="btn">Explore Services</a>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+        <h2 class="section-title">Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🏥</div>
+                <h3>Hospital Care</h3>
+                <p>24/7 emergency, specialist consultations, surgery & diagnostics</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💊</div>
+                <h3>Pharmacy</h3>
+                <p>Online medicine ordering with 2-hour delivery</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🚚</div>
+                <h3>Fast Delivery</h3>
+                <p>Medicines delivered to your doorstep</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHARMACY -->
+    <section id="pharmacy" class="pharmacy-section">
+        <h2 class="section-title">Pharmacy - Order Medicines</h2>
+        <div class="medicine-grid" id="medicineGrid"></div>
+        
+        <div class="cart-container">
+            <h3 style="margin-bottom: 1rem;">Shopping Cart</h3>
+            <div id="cartItems">
+                <p style="text-align: center; color: #64748b;">Your cart is empty</p>
+            </div>
+            <div class="cart-total" id="cartTotal" style="display: none;">
+                Total: <span id="totalPrice">$0</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- DELIVERY FORM -->
+    <section id="delivery">
+        <h2 class="section-title">Medicine Delivery Request</h2>
+        <div class="delivery-form">
+            <form onsubmit="submitDelivery(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="customerName" required placeholder="Your full name">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="customerPhone" required placeholder="061 349 0055" 
+                           pattern="[0-9\s]{9,15}" title="Somali phone: 061 349 0055">
+                </div>
+                <div class="form-group">
+                    <label>Delivery Address *</label>
+                    <textarea id="deliveryAddress" required placeholder="Full address for delivery..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Prescription (Optional)</label>
+                    <input type="file" id="prescriptionFile" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>Special Instructions</label>
+                    <textarea id="instructions" placeholder="e.g., Call on arrival..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-block">🚚 Request Delivery</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="gallery-section">
+        <h2 class="section-title">Hospital Gallery</h2>
+        <div class="gallery-controls">
+            <button class="filter-btn active" onclick="filterGallery('all')">All</button>
+            <button class="filter-btn" onclick="filterGallery('image')">Images</button>
+            <button class="filter-btn" onclick="filterGallery('video')">Videos</button>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="logo" style="color: white; font-size: 2rem; margin-bottom: 1rem;">
+            <div class="logo-img" style="display: inline-block; margin-right: 0.5rem;">
+                <!-- <img src="logo.png" alt="Baxnaano"> --> 🏥
+            </div>
+            Baxnaano Hospital & Pharmacy
+        </div>
+        <p style="opacity: 0.8; margin-bottom: 1rem;">Healthcare Excellence in Somalia</p>
+        
+        <div class="social-links">
+            <a href="https://wa.me/252613490055" title="WhatsApp">💬</a>
+            <a href="tel:+252613490055" title="Hospital">📞</a>
+            <a href="tel:+252770844167" title="Pharmacy">💊</a>
+            <a href="tel:+252610923020" title="Doctor">👨‍⚕️</a>
+            <a href="https://www.facebook.com/share/15RSaXLD1f3/" title="Facebook" target="_blank" rel="noopener noreferrer">📘</a>
+            <a href="https://youtube.com/@bahnanohospital" title="YouTube" target="_blank" rel="noopener noreferrer">📺</a>
+        </div>
+        
+        <!-- LA SAXAY: Copyright-ka la qaaday -->
+        <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">
+            📍 Zoobe-Opposite to Hayat Supermarket, Mogadishu<br>
+            Baxnaano Hospital & Pharmacy. All Rights Reserved.
+        </p>
+    </footer>
+
+    <script>
+        // === SAMPLE MEDICINES ===
+        const sampleMedicines = [
+            { id: 1, name: 'Panadol Extra', price: 5.99, description: 'Pain relief tablets (500mg)', image: null },
+            { id: 2, name: 'Amoxicillin', price: 12.50, description: 'Antibiotic capsules (250mg)', image: null },
+            { id: 3, name: 'Vitamin C', price: 8.75, description: 'Immune booster (1000mg)', image: null },
+            { id: 4, name: 'Cough Syrup', price: 15.00, description: 'For cough relief (150ml)', image: null },
+            { id: 5, name: 'Blood Pressure Monitor', price: 45.99, description: 'Digital BP monitor device', image: null },
+            { id: 6, name: 'Insulin', price: 35.50, description: 'Diabetes medication (10ml)', image: null }
+        ];
+
+        // === LOAD MEDICINES ===
+        function loadMedicines() {
+            const medicines = JSON.parse(localStorage.getItem('pharmacyMedicines') || JSON.stringify(sampleMedicines));
+            const grid = document.getElementById('medicineGrid');
+            
+            grid.innerHTML = medicines.map(med => `
+                <div class="medicine-card">
+                    <div class="medicine-image">
+                        ${med.image ? `<img src="${med.image}" alt="${med.name}">` : '💊'}
+                    </div>
+                    <div class="medicine-content">
+                        <div class="medicine-name">${med.name}</div>
+                        <div class="medicine-price">$${med.price}</div>
+                        <div class="medicine-description">${med.description}</div>
+                        <button class="add-to-cart-btn" onclick='addToCart(${JSON.stringify(med).replace(/'/g, "\\'")})'>Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // === CART SYSTEM ===
+        let cart = [];
+
+        function addToCart(medicine) {
+            cart.push({ ...medicine, cartId: Date.now() });
+            updateCartDisplay();
+            alert(`✅ ${medicine.name} added to cart!`);
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const totalPrice = document.getElementById('totalPrice');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; color: #64748b;">Your cart is empty</p>';
+                cartTotal.style.display = 'none';
+                return;
+            }
+            
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div>
+                        <strong>${item.name}</strong>
+                        <div style="color: #64748b;">$${item.price.toFixed(2)}</div>
+                    </div>
+                    <button class="btn" style="background: var(--danger); padding: 0.5rem 1rem;" onclick="removeFromCart(${index})">Remove</button>
+                </div>
+            `).join('');
+            
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            totalPrice.textContent = `$${total.toFixed(2)}`;
+            cartTotal.style.display = 'block';
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+        }
+
+        // === SUBMIT DELIVERY ===
+        function submitDelivery(event) {
+            event.preventDefault();
+            
+            if (cart.length === 0) {
+                alert('❌ Your cart is empty! Add medicines first.');
+                return;
+            }
+            
+            const delivery = {
+                id: 'BAX-' + Date.now(),
+                customerName: document.getElementById('customerName').value,
+                customerPhone: document.getElementById('customerPhone').value,
+                deliveryAddress: document.getElementById('deliveryAddress').value,
+                instructions: document.getElementById('instructions').value,
+                medicines: [...cart],
+                totalAmount: cart.reduce((sum, item) => sum + item.price, 0),
+                status: 'PENDING',
+                timestamp: new Date().toLocaleString('so-SO')
+            };
+            
+            const prescriptionFile = document.getElementById('prescriptionFile').files[0];
+            if (prescriptionFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    delivery.prescription = e.target.result;
+                    saveDelivery(delivery, event);
+                };
+                reader.readAsDataURL(prescriptionFile);
+            } else {
+                saveDelivery(delivery, event);
+            }
+        }
+
+        function saveDelivery(delivery, event) {
+            let deliveries = JSON.parse(localStorage.getItem('pharmacyDeliveries') || '[]');
+            deliveries.unshift(delivery);
+            localStorage.setItem('pharmacyDeliveries', JSON.stringify(deliveries));
+            
+            alert(`✅ Order #${delivery.id} submitted!\n\nTotal: $${delivery.totalAmount.toFixed(2)}\n📞 We will call you at ${delivery.customerPhone}\n🚚 Delivery in 2-4 hours.\n\n💳 Payment: Dial *712684006666*#$${delivery.totalAmount.toFixed(2)} then call us to confirm.`);
+            
+            cart = [];
+            updateCartDisplay();
+            event.target.reset();
+        }
+
+        // === GALLERY ===
+        function loadGallery() {
+            const gallery = JSON.parse(localStorage.getItem('hospitalGallery') || '[]');
+            const galleryGrid = document.getElementById('galleryGrid');
+            
+            if (gallery.length === 0) {
+                galleryGrid.innerHTML = '<p style="text-align: center; padding: 3rem; color: #64748b;">Gallery is empty</p>';
+                return;
+            }
+            
+            galleryGrid.innerHTML = gallery.map(item => `
+                <div class="gallery-item" data-type="${item.type}">
+                    ${item.type === 'image' 
+                        ? `<img src="${item.url}" alt="${item.title}" class="gallery-media" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'400\\' height=\\'250\\'><rect width=\\'400\\' height=\\'250\\' fill=\\'%23ddd\\'/><text x=\\'50%\\' y=\\'50%\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23666\\'>Image Not Found</text></svg>'">` 
+                        : `<video src="${item.url}" controls class="gallery-media"></video>`
+                    }
+                    <div class="gallery-overlay">
+                        <h4>${item.title}</h4>
+                        <p>${item.description}</p>
+                        <p style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">${item.type.toUpperCase()} • ${item.date}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterGallery(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                item.style.display = (type === 'all' || item.dataset.type === type) ? 'block' : 'none';
+            });
+        }
+
+        // === MOBILE MENU ===
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // === INIT ===
+        window.onload = function() {
+            loadMedicines();
+            updateCartDisplay();
+            loadGallery();
+        };
+    </script>
+</body>
+</html>
