@@ -19,7 +19,7 @@
             background: linear-gradient(135deg, var(--light), #e0f2fe);
             overflow-x: hidden;
         }
-        img, video { max-width: 100%; height: auto; }
+        img, video { max-width: 100%; height: auto; display: block; }
         
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px) scale(0.95); }
@@ -89,10 +89,11 @@
             padding: 0.5rem 1rem;
             border-radius: 25px;
         }
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-links a:focus {
             background: var(--primary);
             color: white;
             transform: translateY(-2px);
+            outline: none;
         }
         .mobile-menu-toggle {
             display: none;
@@ -170,10 +171,11 @@
             display: inline-block;
             text-align: center;
         }
-        .btn:hover {
+        .btn:hover, .btn:focus {
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
             background: linear-gradient(135deg, var(--primary), #0284c7);
+            outline: 3px solid rgba(14, 165, 233, 0.5);
         }
         .btn-block { width: 100%; padding: 1rem; }
 
@@ -216,7 +218,7 @@
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .service-card:hover {
+        .service-card:hover, .service-card:focus-within {
             transform: translateY(-15px) rotateX(5deg);
             box-shadow: 0 30px 60px rgba(0,0,0,0.2);
             background: rgba(255, 255, 255, 0.2);
@@ -244,7 +246,7 @@
             transition: all 0.4s;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        .medicine-card:hover {
+        .medicine-card:hover, .medicine-card:focus-within {
             transform: translateY(-15px) rotateX(5deg) scale(1.02);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
         }
@@ -279,6 +281,29 @@
             font-weight: bold;
             margin-bottom: 1rem;
         }
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 0.25rem;
+        }
         .add-to-cart-btn {
             width: 100%;
             padding: 0.8rem;
@@ -290,7 +315,7 @@
             font-weight: bold;
             transition: all 0.3s;
         }
-        .add-to-cart-btn:hover {
+        .add-to-cart-btn:hover, .add-to-cart-btn:focus {
             background: #059669;
             transform: translateY(-3px);
         }
@@ -403,7 +428,7 @@
             cursor: pointer;
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        .gallery-item:hover {
+        .gallery-item:hover, .gallery-item:focus-within {
             transform: translateY(-15px) rotateX(5deg);
             box-shadow: 0 30px 60px rgba(0,0,0,0.2);
         }
@@ -415,6 +440,31 @@
         .gallery-overlay {
             padding: 1.5rem;
         }
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+        .error {
+            text-align: center;
+            padding: 3rem;
+            color: var(--danger);
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 9999;
+            animation: slideIn 0.5s ease;
+        }
+        .notification.success { background: var(--success); color: white; }
+        .notification.error { background: var(--danger); color: white; }
+        .notification.warning { background: var(--warning); color: white; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .hidden { display: none !important; }
 
         footer {
             background: var(--glass);
@@ -435,7 +485,7 @@
             display: inline-block;
             text-decoration: none;
         }
-        .social-links a:hover {
+        .social-links a:hover, .social-links a:focus {
             color: var(--primary);
             transform: translateY(-5px) rotateY(180deg);
         }
@@ -463,10 +513,11 @@
 </head>
 <body>
     <!-- NAVIGATION -->
-    <nav>
+    <nav role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-img">🏥</div>
+                <!-- LOGO WILL BE LOADED FROM FIREBASE SETTINGS -->
+                <div class="logo-img" id="logoDisplay" aria-hidden="true">🏥</div>
                 Baxnaano Hospital
             </div>
             <ul class="nav-links" id="navLinks">
@@ -477,14 +528,14 @@
                 <li><a href="#delivery">Delivery</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
         </div>
     </nav>
 
     <!-- HERO -->
-    <section id="home" class="hero">
+    <section id="home" class="hero" aria-labelledby="hero-title">
         <div class="hero-content">
-            <h1>Baxnaano Hospital</h1>
+            <h1 id="hero-title">Baxnaano Hospital</h1>
             <h2>Healthcare + Pharmacy</h2>
             <p>Complete healthcare services with online pharmacy & 2-hour delivery</p>
             <a href="#services" class="btn">Explore Services</a>
@@ -492,21 +543,21 @@
     </section>
 
     <!-- SERVICES -->
-    <section id="services">
-        <h2 class="section-title">Our Services</h2>
+    <section id="services" aria-labelledby="services-title">
+        <h2 class="section-title" id="services-title">Our Services</h2>
         <div class="services-grid">
             <div class="service-card">
-                <div class="service-icon">🏥</div>
+                <div class="service-icon" aria-hidden="true">🏥</div>
                 <h3>Hospital Care</h3>
                 <p>24/7 emergency, specialist consultations, surgery & diagnostics</p>
             </div>
             <div class="service-card">
-                <div class="service-icon">💊</div>
+                <div class="service-icon" aria-hidden="true">💊</div>
                 <h3>Pharmacy</h3>
                 <p>Online medicine ordering with 2-hour delivery</p>
             </div>
             <div class="service-card">
-                <div class="service-icon">🚚</div>
+                <div class="service-icon" aria-hidden="true">🚚</div>
                 <h3>Fast Delivery</h3>
                 <p>Medicines delivered to your doorstep</p>
             </div>
@@ -514,9 +565,9 @@
     </section>
 
     <!-- PHARMACY -->
-    <section id="pharmacy" class="pharmacy-section">
-        <h2 class="section-title">Pharmacy - Order Medicines</h2>
-        <div class="medicine-grid" id="medicineGrid"></div>
+    <section id="pharmacy" class="pharmacy-section" aria-labelledby="pharmacy-title">
+        <h2 class="section-title" id="pharmacy-title">Pharmacy - Order Medicines</h2>
+        <div class="medicine-grid" id="medicineGrid"><p class="loading">Loading medicines...</p></div>
         
         <div class="cart-container">
             <h3 style="margin-bottom: 1rem;">Shopping Cart</h3>
@@ -530,62 +581,74 @@
     </section>
 
     <!-- DELIVERY FORM -->
-    <section id="delivery">
-        <h2 class="section-title">Medicine Delivery Request</h2>
+    <section id="delivery" aria-labelledby="delivery-title">
+        <h2 class="section-title" id="delivery-title">Medicine Delivery Request</h2>
         <div class="delivery-form">
-            <form onsubmit="submitDelivery(event)">
+            <form id="deliveryForm">
                 <div class="form-group">
-                    <label>Full Name *</label>
-                    <input type="text" id="customerName" required placeholder="Your full name">
+                    <label for="customerName">Full Name *</label>
+                    <input type="text" id="customerName" required placeholder="Your full name" aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label>Phone Number *</label>
+                    <label for="customerPhone">Phone Number *</label>
                     <input type="tel" id="customerPhone" required placeholder="061 349 0055" 
-                           pattern="[0-9\s]{9,15}" title="Somali phone: 061 349 0055">
+                           pattern="^(00252|\+252|0)(61|62|65|66|67|68|69|71|72|73|74|77|78|79|90|91|92|93|94|95|96|97|98)\d{6}$" 
+                           title="Valid Somali phone: 061 349 0055 or +252613490055" aria-required="true">
                 </div>
                 <div class="form-group">
-                    <label>Delivery Address *</label>
-                    <textarea id="deliveryAddress" required placeholder="Full address for delivery..."></textarea>
+                    <label for="deliveryAddress">Delivery Address *</label>
+                    <textarea id="deliveryAddress" required placeholder="Full address for delivery..." aria-required="true"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Prescription (Optional)</label>
-                    <input type="file" id="prescriptionFile" accept="image/*">
+                    <label for="prescriptionFile">Prescription (Optional)</label>
+                    <input type="file" id="prescriptionFile" accept="image/*" aria-describedby="prescription-help">
+                    <small id="prescription-help">Upload prescription image if required (Max 5MB)</small>
                 </div>
                 <div class="form-group">
-                    <label>Special Instructions</label>
+                    <label for="instructions">Special Instructions</label>
                     <textarea id="instructions" placeholder="e.g., Call on arrival..."></textarea>
                 </div>
-                <button type="submit" class="btn btn-block">🚚 Request Delivery</button>
+                <button type="submit" class="btn btn-block" id="submitOrderBtn">🚚 Request Delivery</button>
             </form>
+            <!-- DYNAMIC USSD PAYMENT LINK -->
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="#" id="ussdPaymentLink" class="btn" style="background: var(--success); display: none;">
+                    💳 Click to Pay: *712*684006666*<span id="ussdAmount">0</span>#
+                </a>
+                <p style="font-size: 0.9rem; color: #64748b; margin-top: 0.5rem;" id="ussdInstructions">
+                    Submit order first, then click to complete payment
+                </p>
+            </div>
         </div>
     </section>
 
     <!-- GALLERY -->
-    <section id="gallery" class="gallery-section">
-        <h2 class="section-title">Hospital Gallery</h2>
+    <section id="gallery" class="gallery-section" aria-labelledby="gallery-title">
+        <h2 class="section-title" id="gallery-title">Hospital Gallery</h2>
         <div class="gallery-controls">
-            <button class="filter-btn active" onclick="filterGallery('all')">All</button>
-            <button class="filter-btn" onclick="filterGallery('image')">Images</button>
-            <button class="filter-btn" onclick="filterGallery('video')">Videos</button>
+            <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+            <button class="filter-btn" data-filter="image" aria-pressed="false">Images</button>
+            <button class="filter-btn" data-filter="video" aria-pressed="false">Videos</button>
         </div>
-        <div class="gallery-grid" id="galleryGrid"></div>
+        <div class="gallery-grid" id="galleryGrid"><p class="loading">Loading gallery...</p></div>
     </section>
 
     <!-- FOOTER -->
-    <footer>
+    <footer role="contentinfo">
         <div class="logo" style="color: white; font-size: 2rem; margin-bottom: 1rem;">
-            <div class="logo-img" style="display: inline-block; margin-right: 0.5rem;">🏥</div>
+            <!-- LOGO WILL BE LOADED FROM FIREBASE SETTINGS -->
+            <div class="logo-img" id="footerLogoDisplay" style="display: inline-block; margin-right: 0.5rem;" aria-hidden="true">🏥</div>
             Baxnaano Hospital & Pharmacy
         </div>
         <p style="opacity: 0.8; margin-bottom: 1rem;">Healthcare Excellence in Somalia</p>
         
         <div class="social-links">
-            <a href="https://wa.me/252613490055" title="WhatsApp">💬</a>
-            <a href="tel:+252613490055" title="Hospital">📞</a>
-            <a href="tel:+252770844167" title="Pharmacy">💊</a>
-            <a href="tel:+252610923020" title="Doctor">👨‍⚕️</a>
-            <a href="https://www.facebook.com/share/15RSaXLD1f3/" title="Facebook" target="_blank" rel="noopener noreferrer">📘</a>
-            <a href="https://youtube.com/@bahnanohospital" title="YouTube" target="_blank" rel="noopener noreferrer">📺</a>
+            <a href="https://wa.me/252613490055" title="WhatsApp" aria-label="WhatsApp">💬</a>
+            <a href="tel:+252613490055" title="Hospital" aria-label="Hospital Phone">📞</a>
+            <a href="tel:+252770844167" title="Pharmacy" aria-label="Pharmacy Phone">💊</a>
+            <a href="tel:+252610923020" title="Doctor" aria-label="Doctor Phone">👨‍⚕️</a>
+            <a href="https://www.facebook.com/share/15RSaXLD1f3/" title="Facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook">📘</a>
+            <a href="https://youtube.com/@bahnanohospital" title="YouTube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">📺</a>
         </div>
         
         <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">
@@ -596,17 +659,14 @@
 
     <!-- FIREBASE SDK -->
     <script type="module">
-        // TODO: Add your Firebase config here
-        // 1. Go to firebase.google.com
-        // 2. Create project → Build → Firestore Database
-        // 3. Go to Project Settings → General → Add app (Web)
-        // 4. Copy config object and paste below
-
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
+        // === REPLACE WITH YOUR ACTUAL FIREBASE CONFIG ===
+        // Get this from Firebase Console > Project Settings > General > Your apps
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
+            apiKey: "YOUR_API_KEY_HERE",
             authDomain: "YOUR_PROJECT.firebaseapp.com",
             projectId: "YOUR_PROJECT_ID",
             storageBucket: "YOUR_PROJECT.appspot.com",
@@ -616,222 +676,412 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
-        // Global data manager for Firebase
         window.DataManager = {
             medicines: collection(db, 'medicines'),
-            deliveries: collection(db, 'orders'),
+            orders: collection(db, 'orders'),
             gallery: collection(db, 'gallery'),
+            settings: collection(db, 'settings'),
             
             async getMedicines() {
-                const snapshot = await getDocs(this.medicines);
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                try {
+                    const snapshot = await getDocs(this.medicines);
+                    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                } catch (error) {
+                    console.error("Error fetching medicines:", error);
+                    throw new Error("Failed to load medicines. Check connection.");
+                }
             },
             
-            async saveMedicine(medicine) {
-                await addDoc(this.medicines, medicine);
-            },
-            
-            async updateMedicine(id, medicine) {
-                await updateDoc(doc(db, 'medicines', id), medicine);
-            },
-            
-            async deleteMedicine(id) {
-                await deleteDoc(doc(db, 'medicines', id));
-            },
-            
-            async getOrders() {
-                const q = query(this.deliveries, orderBy('timestamp', 'desc'));
-                const snapshot = await getDocs(q);
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            },
-            
-            async saveOrder(order) {
-                await addDoc(this.deliveries, order);
-            },
-            
-            async updateOrder(id, status) {
-                await updateDoc(doc(db, 'orders', id), { status });
-            },
-            
-            async deleteOrder(id) {
-                await deleteDoc(doc(db, 'orders', id));
+            async saveOrder(order, prescriptionFile) {
+                try {
+                    // Upload prescription to Storage if exists
+                    let prescriptionUrl = null;
+                    if (prescriptionFile) {
+                        const storageRef = ref(storage, `prescriptions/${Date.now()}_${prescriptionFile.name}`);
+                        await uploadBytes(storageRef, prescriptionFile);
+                        prescriptionUrl = await getDownloadURL(storageRef);
+                    }
+                    
+                    return await addDoc(this.orders, {
+                        ...order,
+                        prescription: prescriptionUrl,
+                        timestamp: new Date().toISOString()
+                    });
+                } catch (error) {
+                    console.error("Error saving order:", error);
+                    throw new Error("Failed to submit order. Try again.");
+                }
             },
             
             async getGallery() {
-                const snapshot = await getDocs(this.gallery);
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                try {
+                    const snapshot = await getDocs(this.gallery);
+                    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                } catch (error) {
+                    console.error("Error fetching gallery:", error);
+                    throw new Error("Failed to load gallery.");
+                }
             },
             
-            async saveGalleryItem(item) {
-                await addDoc(this.gallery, item);
+            async getSettings() {
+                try {
+                    const snapshot = await getDocs(this.settings);
+                    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                } catch (error) {
+                    console.error("Error fetching settings:", error);
+                    return [];
+                }
             }
         };
 
-        // Real-time listeners (multi-device sync)
-        onSnapshot(collection(db, 'medicines'), () => loadMedicines());
-        onSnapshot(query(collection(db, 'orders'), orderBy('timestamp', 'desc')), () => {
-            loadDeliveries();
-            updateStats();
-        });
-        onSnapshot(collection(db, 'gallery'), () => loadGallery());
-
-        // Rest of your app code...
-        // (Paste the rest of the script here - see below)
+        // Real-time listeners
+        onSnapshot(collection(db, 'medicines'), () => window.app?.loadMedicines());
+        onSnapshot(collection(db, 'gallery'), () => window.app?.loadGallery());
+        onSnapshot(collection(db, 'settings'), () => window.app?.loadSettings());
     </script>
 
     <script>
-        // === CART SYSTEM ===
-        let cart = [];
-
-        async function loadMedicines() {
-            const medicines = await DataManager.getMedicines();
-            const grid = document.getElementById('medicineGrid');
-            
-            if (!grid) return;
-            
-            grid.innerHTML = medicines.map(med => `
-                <div class="medicine-card">
-                    <div class="medicine-image">
-                        ${med.image ? `<img src="${med.image}" alt="${med.name}">` : '💊'}
-                    </div>
-                    <div class="medicine-content">
-                        <div class="medicine-name">${med.name}</div>
-                        <div class="medicine-price">$${med.price}</div>
-                        <div class="medicine-description">${med.description}</div>
-                        <button class="add-to-cart-btn" onclick='addToCart(${JSON.stringify(med).replace(/'/g, "\\'")})'>Add to Cart</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(medicine) {
-            cart.push({ ...medicine, cartId: Date.now() });
-            updateCartDisplay();
-            alert(`✅ ${medicine.name} added to cart!`);
-        }
-
-        function updateCartDisplay() {
-            const cartItems = document.getElementById('cartItems');
-            const cartTotal = document.getElementById('cartTotal');
-            const totalPrice = document.getElementById('totalPrice');
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<p style="text-align: center; color: #64748b;">Your cart is empty</p>';
-                cartTotal.style.display = 'none';
-                return;
+        // === MAIN APPLICATION CLASS ===
+        class HospitalApp {
+            constructor() {
+                this.cart = this.loadCartFromStorage();
+                this.logoUrl = null;
+                this.initEventListeners();
             }
-            
-            cartItems.innerHTML = cart.map((item, index) => `
-                <div class="cart-item">
-                    <div>
-                        <strong>${item.name}</strong>
-                        <div style="color: #64748b;">$${item.price.toFixed(2)}</div>
-                    </div>
-                    <button class="btn" style="background: var(--danger); padding: 0.5rem 1rem;" onclick="removeFromCart(${index})">Remove</button>
-                </div>
-            `).join('');
-            
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            totalPrice.textContent = `$${total.toFixed(2)}`;
-            cartTotal.style.display = 'block';
-        }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartDisplay();
-        }
+            initEventListeners() {
+                // Mobile menu toggle
+                const mobileMenuBtn = document.getElementById('mobileMenuToggle');
+                mobileMenuBtn?.addEventListener('click', () => this.toggleMenu());
 
-        // === SUBMIT DELIVERY ===
-        async function submitDelivery(event) {
-            event.preventDefault();
-            
-            if (cart.length === 0) {
-                alert('❌ Your cart is empty! Add medicines first.');
-                return;
-            }
-            
-            const delivery = {
-                customerName: document.getElementById('customerName').value,
-                customerPhone: document.getElementById('customerPhone').value,
-                deliveryAddress: document.getElementById('deliveryAddress').value,
-                instructions: document.getElementById('instructions').value,
-                medicines: [...cart],
-                totalAmount: cart.reduce((sum, item) => sum + item.price, 0),
-                status: 'PENDING',
-                timestamp: new Date().toISOString()
-            };
-            
-            const prescriptionFile = document.getElementById('prescriptionFile').files[0];
-            if (prescriptionFile) {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    delivery.prescription = e.target.result;
-                    await DataManager.saveOrder(delivery);
-                    alert(`✅ Order submitted!\n💳 Dial: *712684006666*#$${delivery.totalAmount.toFixed(2)}`);
-                    cart = [];
-                    updateCartDisplay();
-                    event.target.reset();
-                };
-                reader.readAsDataURL(prescriptionFile);
-            } else {
-                await DataManager.saveOrder(delivery);
-                alert(`✅ Order submitted!\n💳 Dial: *712684006666*#$${delivery.totalAmount.toFixed(2)}`);
-                cart = [];
-                updateCartDisplay();
-                event.target.reset();
-            }
-        }
+                // Delivery form submission
+                const deliveryForm = document.getElementById('deliveryForm');
+                deliveryForm?.addEventListener('submit', (e) => this.submitDelivery(e));
 
-        // === GALLERY ===
-        async function loadGallery() {
-            const gallery = await DataManager.getGallery();
-            const galleryGrid = document.getElementById('galleryGrid');
-            
-            if (!galleryGrid) return;
-            
-            if (gallery.length === 0) {
-                galleryGrid.innerHTML = '<p style="text-align: center; padding: 3rem; color: #64748b;">Gallery is empty</p>';
-                return;
+                // Gallery filter buttons
+                const filterBtns = document.querySelectorAll('.filter-btn');
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => this.filterGallery(e, btn.dataset.filter));
+                });
+
+                // Close mobile menu on link click
+                const navLinks = document.querySelectorAll('.nav-links a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        document.getElementById('navLinks').classList.remove('active');
+                        document.getElementById('mobileMenuToggle').setAttribute('aria-expanded', 'false');
+                    });
+                });
+
+                // Load logo on start
+                this.loadSettings();
             }
-            
-            galleryGrid.innerHTML = gallery.map(item => `
-                <div class="gallery-item" data-type="${item.type}">
-                    ${item.type === 'image' 
-                        ? `<img src="${item.url}" alt="${item.title}" class="gallery-media" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'400\\' height=\\'250\\'><rect width=\\'400\\' height=\\'250\\' fill=\\'%23ddd\\'/><text x=\\'50%\\' y=\\'50%\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23666\\'>Image Not Found</text></svg>'">` 
-                        : `<video src="${item.url}" controls class="gallery-media"></video>`
+
+            toggleMenu() {
+                const navLinks = document.getElementById('navLinks');
+                const mobileMenuBtn = document.getElementById('mobileMenuToggle');
+                navLinks.classList.toggle('active');
+                const isExpanded = navLinks.classList.contains('active');
+                mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
+            }
+
+            async loadSettings() {
+                try {
+                    const settings = await DataManager.getSettings();
+                    const logoSetting = settings.find(s => s.key === 'logo');
+                    if (logoSetting?.value) {
+                        this.logoUrl = logoSetting.value;
+                        document.getElementById('logoDisplay').innerHTML = `<img src="${logoSetting.value}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" alt="Logo">`;
+                        document.getElementById('footerLogoDisplay').innerHTML = `<img src="${logoSetting.value}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" alt="Logo">`;
                     }
-                    <div class="gallery-overlay">
-                        <h4>${item.title}</h4>
-                        <p>${item.description}</p>
-                        <p style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">${item.type.toUpperCase()} • ${item.date}</p>
+                } catch (error) {
+                    console.error("Failed to load logo:", error);
+                }
+            }
+
+            async loadMedicines() {
+                const grid = document.getElementById('medicineGrid');
+                try {
+                    const medicines = await DataManager.getMedicines();
+                    
+                    if (medicines.length === 0) {
+                        grid.innerHTML = '<p class="error">No medicines available at the moment.</p>';
+                        return;
+                    }
+                    
+                    grid.innerHTML = medicines.map(med => `
+                        <div class="medicine-card">
+                            <div class="medicine-image">
+                                ${med.image ? `<img src="${med.image}" alt="${this.escapeHtml(med.name)}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'250\\' height=\\'200\\'><rect width=\\'250\\' height=\\'200\\' fill=\\'%23ddd\\'/><text x=\\'50%\\' y=\\'50%\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23666\\'>💊</text></svg>'">` : '💊'}
+                            </div>
+                            <div class="medicine-content">
+                                <div class="medicine-name">${this.escapeHtml(med.name)}</div>
+                                <div class="medicine-price">$${Number(med.price).toFixed(2)}</div>
+                                <div class="medicine-description">${this.escapeHtml(med.description || '')}</div>
+                                <div class="quantity-selector">
+                                    <button class="quantity-btn" data-action="decrease" data-id="${med.id}">-</button>
+                                    <input type="number" class="quantity-input" data-id="${med.id}" value="1" min="1" max="99">
+                                    <button class="quantity-btn" data-action="increase" data-id="${med.id}">+</button>
+                                </div>
+                                <button class="add-to-cart-btn" data-medicine='${JSON.stringify(med).replace(/"/g, '&quot;')}'>
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    this.attachMedicineEventListeners();
+                } catch (error) {
+                    grid.innerHTML = `<p class="error">${error.message}</p>`;
+                }
+            }
+
+            attachMedicineEventListeners() {
+                document.querySelectorAll('.quantity-btn').forEach(btn => {
+                    btn.addEventListener('click', () => this.updateQuantity(btn.dataset.id, btn.dataset.action));
+                });
+                document.querySelectorAll('.quantity-input').forEach(input => {
+                    input.addEventListener('change', () => this.validateQuantity(input));
+                });
+                document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                    btn.addEventListener('click', () => this.addToCart(JSON.parse(btn.dataset.medicine)));
+                });
+            }
+
+            updateQuantity(id, action) {
+                const input = document.querySelector(`.quantity-input[data-id="${id}"]`);
+                const currentValue = parseInt(input.value) || 1;
+                const newValue = action === 'increase' ? currentValue + 1 : Math.max(1, currentValue - 1);
+                input.value = newValue;
+            }
+
+            validateQuantity(input) {
+                input.value = Math.max(1, Math.min(99, parseInt(input.value) || 1));
+            }
+
+            addToCart(medicine) {
+                const quantitySelector = document.querySelector(`.quantity-input[data-id="${medicine.id}"]`);
+                const quantity = parseInt(quantitySelector?.value) || 1;
+                
+                const existingItem = this.cart.find(item => item.id === medicine.id);
+                if (existingItem) {
+                    existingItem.quantity += quantity;
+                } else {
+                    this.cart.push({ ...medicine, quantity, cartId: Date.now() });
+                }
+                
+                this.saveCartToStorage();
+                this.updateCartDisplay();
+                this.showNotification(`✅ ${this.escapeHtml(medicine.name)} added to cart!`, 'success');
+            }
+
+            removeFromCart(index) {
+                this.cart.splice(index, 1);
+                this.saveCartToStorage();
+                this.updateCartDisplay();
+            }
+
+            updateCartDisplay() {
+                const cartItems = document.getElementById('cartItems');
+                const cartTotal = document.getElementById('cartTotal');
+                const totalPrice = document.getElementById('totalPrice');
+                
+                if (this.cart.length === 0) {
+                    cartItems.innerHTML = '<p style="text-align: center; color: #64748b;">Your cart is empty</p>';
+                    cartTotal.style.display = 'none';
+                    this.updateUSSDLink(0);
+                    return;
+                }
+                
+                cartItems.innerHTML = this.cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${this.escapeHtml(item.name)}</strong>
+                            <div style="color: #64748b;">Quantity: ${item.quantity}</div>
+                            <div style="color: var(--primary); font-weight: bold;">$${(item.price * item.quantity).toFixed(2)}</div>
+                        </div>
+                        <button class="btn" data-remove="${index}" style="background: var(--danger); padding: 0.5rem 1rem;">Remove</button>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+                
+                document.querySelectorAll('[data-remove]').forEach(btn => {
+                    btn.addEventListener('click', () => this.removeFromCart(parseInt(btn.dataset.remove)));
+                });
+                
+                const total = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                totalPrice.textContent = `$${total.toFixed(2)}`;
+                cartTotal.style.display = 'block';
+                
+                // UPDATE USSD LINK DYNAMICALLY
+                this.updateUSSDLink(total);
+            }
+
+            updateUSSDLink(amount) {
+                const ussdLink = document.getElementById('ussdPaymentLink');
+                const ussdAmount = document.getElementById('ussdAmount');
+                const ussdInstructions = document.getElementById('ussdInstructions');
+                
+                if (amount > 0) {
+                    const cleanAmount = Math.round(amount); // USSD doesn't support decimals
+                    ussdAmount.textContent = cleanAmount;
+                    ussdLink.href = `tel:*712*684006666*${cleanAmount}#`;
+                    ussdLink.style.display = 'inline-block';
+                    ussdInstructions.textContent = `Click to pay $${cleanAmount} via USSD`;
+                } else {
+                    ussdLink.style.display = 'none';
+                    ussdInstructions.textContent = 'Submit order first, then click to complete payment';
+                }
+            }
+
+            async submitDelivery(event) {
+                event.preventDefault();
+                const submitBtn = document.getElementById('submitOrderBtn');
+                
+                if (this.cart.length === 0) {
+                    this.showNotification('❌ Your cart is empty! Add medicines first.', 'error');
+                    return;
+                }
+                
+                const delivery = {
+                    customerName: document.getElementById('customerName').value.trim(),
+                    customerPhone: document.getElementById('customerPhone').value.trim(),
+                    deliveryAddress: document.getElementById('deliveryAddress').value.trim(),
+                    instructions: document.getElementById('instructions').value.trim(),
+                    medicines: [...this.cart],
+                    totalAmount: this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                    status: 'PENDING'
+                };
+                
+                // Validate phone number
+                const phonePattern = /^(00252|\+252|0)(61|62|65|66|67|68|69|71|72|73|74|77|78|79|90|91|92|93|94|95|96|97|98)\d{6}$/;
+                if (!phonePattern.test(delivery.customerPhone)) {
+                    this.showNotification('❌ Please enter a valid Somali phone number', 'error');
+                    return;
+                }
+                
+                // Disable button to prevent double submission
+                submitBtn.disabled = true;
+                submitBtn.textContent = '⏳ Submitting...';
+                
+                try {
+                    const prescriptionFile = document.getElementById('prescriptionFile').files[0];
+                    
+                    // Validate prescription file size
+                    if (prescriptionFile && prescriptionFile.size > 5 * 1024 * 1024) {
+                        throw new Error('Prescription file too large! Max 5MB');
+                    }
+                    
+                    await DataManager.saveOrder(delivery, prescriptionFile);
+                    
+                    this.showNotification(
+                        `✅ Order submitted!\n💳 Total: $${delivery.totalAmount.toFixed(2)}\n📞 You will receive a call shortly`,
+                        'success'
+                    );
+                    
+                    // Clear cart and form
+                    this.cart = [];
+                    this.saveCartToStorage();
+                    this.updateCartDisplay();
+                    document.getElementById('deliveryForm').reset();
+                    
+                    // Show USSD payment link
+                    this.updateUSSDLink(delivery.totalAmount);
+                    
+                } catch (error) {
+                    this.showNotification(`❌ ${error.message}`, 'error');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '🚚 Request Delivery';
+                }
+            }
+
+            async loadGallery() {
+                const galleryGrid = document.getElementById('galleryGrid');
+                try {
+                    const gallery = await DataManager.getGallery();
+                    
+                    if (gallery.length === 0) {
+                        galleryGrid.innerHTML = '<p class="error">Gallery is empty.</p>';
+                        return;
+                    }
+                    
+                    galleryGrid.innerHTML = gallery.map(item => `
+                        <div class="gallery-item" data-type="${item.type}">
+                            ${item.type === 'image' 
+                                ? `<img src="${item.url}" alt="${this.escapeHtml(item.title)}" class="gallery-media" loading="lazy">` 
+                                : `<video src="${item.url}" controls class="gallery-media"></video>`
+                            }
+                            <div class="gallery-overlay">
+                                <h4>${this.escapeHtml(item.title)}</h4>
+                                <p>${this.escapeHtml(item.description || '')}</p>
+                                <p style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">${item.type.toUpperCase()} • ${item.date}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    galleryGrid.innerHTML = `<p class="error">${error.message}</p>`;
+                }
+            }
+
+            filterGallery(event, type) {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-pressed', 'false');
+                });
+                event.target.classList.add('active');
+                event.target.setAttribute('aria-pressed', 'true');
+                
+                const items = document.querySelectorAll('.gallery-item');
+                items.forEach(item => {
+                    item.style.display = (type === 'all' || item.dataset.type === type) ? 'block' : 'none';
+                });
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.setAttribute('role', 'alert');
+                notification.setAttribute('aria-live', 'polite');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'fadeOut 0.5s ease';
+                    setTimeout(() => notification.remove(), 500);
+                }, 5000);
+            }
+
+            loadCartFromStorage() {
+                try {
+                    return JSON.parse(localStorage.getItem('baxnaano_cart') || '[]');
+                } catch {
+                    return [];
+                }
+            }
+
+            saveCartToStorage() {
+                localStorage.setItem('baxnaano_cart', JSON.stringify(this.cart));
+            }
+
+            async init() {
+                await this.loadMedicines();
+                this.updateCartDisplay();
+                await this.loadGallery();
+            }
         }
 
-        function filterGallery(type) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const items = document.querySelectorAll('.gallery-item');
-            items.forEach(item => {
-                item.style.display = (type === 'all' || item.dataset.type === type) ? 'block' : 'none';
-            });
-        }
-
-        // === MOBILE MENU ===
-        function toggleMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
-        }
-
-        // === INIT ===
-        window.onload = async function() {
-            await loadMedicines();
-            updateCartDisplay();
-            await loadGallery();
-        };
+        // Initialize application
+        window.app = new HospitalApp();
+        window.addEventListener('DOMContentLoaded', () => window.app.init());
     </script>
 </body>
 </html>
