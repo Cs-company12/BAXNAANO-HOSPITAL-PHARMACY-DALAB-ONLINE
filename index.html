@@ -12,496 +12,95 @@
             --dark: #1e293b; --light: #f8fafc; --success: #10b981; --danger: #ef4444;
             --glass: rgba(255, 255, 255, 0.1); --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.6;
-            color: var(--dark);
-            background: linear-gradient(135deg, var(--light), #e0f2fe);
-            overflow-x: hidden;
-        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; color: var(--dark); background: linear-gradient(135deg, var(--light), #e0f2fe); overflow-x: hidden; }
         img, video { max-width: 100%; height: auto; display: block; }
         
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(-100px, -100px) rotate(360deg); }
-        }
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-            50% { box-shadow: 0 30px 50px -5px rgba(14, 165, 233, 0.4); }
-        }
-        @keyframes puls {
-            0% { transform: scale(1); filter: brightness(1); }
-            100% { transform: scale(0.97); filter: brightness(1.2); }
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(-100px, -100px) rotate(360deg); } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); } 50% { box-shadow: 0 30px 50px -5px rgba(14, 165, 233, 0.4); } }
+        @keyframes puls { 0% { transform: scale(1); filter: brightness(1); } 100% { transform: scale(0.97); filter: brightness(1.2); } }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        nav {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
-        }
-        .logo-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-        }
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-        .nav-links a {
-            color: var(--dark);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-        }
-        .nav-links a:hover, .nav-links a:focus {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-            outline: none;
-        }
-        .mobile-menu-toggle {
-            display: none;
-            color: var(--dark);
-            font-size: 1.5rem;
-            cursor: pointer;
-            background: var(--glass);
-            border: none;
-            padding: 0.5rem;
-            border-radius: 8px;
-        }
+        nav { background: var(--glass); backdrop-filter: blur(10px); position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: var(--shadow); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; text-shadow: 0 0 10px rgba(14, 165, 233, 0.5); }
+        .logo-img { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a { color: var(--dark); text-decoration: none; font-weight: 600; transition: all 0.3s; padding: 0.5rem 1rem; border-radius: 25px; }
+        .nav-links a:hover, .nav-links a:focus { background: var(--primary); color: white; transform: translateY(-2px); outline: none; }
+        .mobile-menu-toggle { display: none; color: var(--dark); font-size: 1.5rem; cursor: pointer; background: var(--glass); border: none; padding: 0.5rem; border-radius: 8px; }
 
-        .hero {
-            margin-top: 60px;
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--dark), var(--primary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="50" fill="%230ea5e9" opacity="0.1"/><circle cx="800" cy="300" r="80" fill="%238b5cf6" opacity="0.1"/><circle cx="400" cy="700" r="60" fill="%23f97316" opacity="0.1"/></svg>');
-            animation: float 20s infinite linear;
-        }
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: glow 3s infinite ease-in-out;
-        }
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-        .hero h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease 0.2s both;
-            opacity: 0.9;
-        }
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease 0.4s both;
-            opacity: 0.8;
-        }
-        .btn {
-            padding: 1rem 2.5rem;
-            background: linear-gradient(135deg, var(--accent), #ff6b00);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: all 0.3s;
-            animation: fadeInUp 1s ease 0.6s both;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
-            display: inline-block;
-            text-align: center;
-        }
-        .btn:hover, .btn:focus {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-            background: linear-gradient(135deg, var(--primary), #0284c7);
-            outline: 3px solid rgba(14, 165, 233, 0.5);
-        }
+        .hero { margin-top: 60px; min-height: 100vh; background: linear-gradient(135deg, var(--dark), var(--primary)); display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 2rem; position: relative; overflow: hidden; }
+        .hero::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="50" fill="%230ea5e9" opacity="0.1"/><circle cx="800" cy="300" r="80" fill="%238b5cf6" opacity="0.1"/><circle cx="400" cy="700" r="60" fill="%23f97316" opacity="0.1"/></svg>'); animation: float 20s infinite linear; }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; background: var(--glass); backdrop-filter: blur(20px); padding: 3rem; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2); animation: glow 3s infinite ease-in-out; }
+        .hero h1 { font-size: 4rem; margin-bottom: 1rem; animation: fadeInUp 1s ease; text-shadow: 0 0 20px rgba(0, 0, 0, 0.5); }
+        .hero h2 { font-size: 2rem; margin-bottom: 1rem; animation: fadeInUp 1s ease 0.2s both; opacity: 0.9; }
+        .hero p { font-size: 1.3rem; margin-bottom: 2rem; animation: fadeInUp 1s ease 0.4s both; opacity: 0.8; }
+        .btn { padding: 1rem 2.5rem; background: linear-gradient(135deg, var(--accent), #ff6b00); color: white; text-decoration: none; border-radius: 50px; font-weight: bold; transition: all 0.3s; animation: fadeInUp 1s ease 0.6s both; border: none; cursor: pointer; font-size: 1rem; box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3); display: inline-block; text-align: center; }
+        .btn:hover, .btn:focus { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); background: linear-gradient(135deg, var(--primary), #0284c7); outline: 3px solid rgba(14, 165, 233, 0.5); }
         .btn-block { width: 100%; padding: 1rem; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
 
-        section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 3rem;
-            color: var(--dark);
-            position: relative;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
+        section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 3rem; margin-bottom: 3rem; color: var(--dark); position: relative; }
+        .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 100px; height: 4px; background: var(--primary); border-radius: 2px; }
 
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .service-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            transition: all 0.4s;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .service-card:hover, .service-card:focus-within {
-            transform: translateY(-15px) rotateX(5deg);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-            background: rgba(255, 255, 255, 0.2);
-        }
-        .service-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: puls 3s infinite alternate;
-        }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .service-card { background: var(--glass); backdrop-filter: blur(10px); padding: 2rem; border-radius: 20px; box-shadow: var(--shadow); transition: all 0.4s; text-align: center; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .service-card:hover, .service-card:focus-within { transform: translateY(-15px) rotateX(5deg); box-shadow: 0 30px 60px rgba(0,0,0,0.2); background: rgba(255, 255, 255, 0.2); }
+        .service-icon { font-size: 4rem; margin-bottom: 1rem; animation: puls 3s infinite alternate; }
 
-        .pharmacy-section {
-            background: linear-gradient(135deg, #f0f9ff, #f5f3ff);
-        }
-        .medicine-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        .medicine-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: all 0.4s;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        .medicine-card:hover, .medicine-card:focus-within {
-            transform: translateY(-15px) rotateX(5deg) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-        }
-        .medicine-image {
-            height: 200px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .medicine-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .medicine-content {
-            padding: 1.5rem;
-        }
-        .medicine-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-        .medicine-price {
-            font-size: 1.5rem;
-            color: var(--primary);
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-        .quantity-btn {
-            width: 30px;
-            height: 30px;
-            border: 1px solid var(--primary);
-            background: white;
-            color: var(--primary);
-            border-radius: 50%;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .quantity-input {
-            width: 50px;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            padding: 0.25rem;
-        }
-        .add-to-cart-btn {
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        .add-to-cart-btn:hover, .add-to-cart-btn:focus {
-            background: #059669;
-            transform: translateY(-3px);
-        }
+        .pharmacy-section { background: linear-gradient(135deg, #f0f9ff, #f5f3ff); }
+        .medicine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .medicine-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); transition: all 0.4s; border: 1px solid rgba(0, 0, 0, 0.05); }
+        .medicine-card:hover, .medicine-card:focus-within { transform: translateY(-15px) rotateX(5deg) scale(1.02); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2); }
+        .medicine-image { height: 200px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; position: relative; overflow: hidden; }
+        .medicine-image img { width: 100%; height: 100%; object-fit: cover; }
+        .medicine-content { padding: 1.5rem; }
+        .medicine-name { font-size: 1.3rem; font-weight: bold; color: var(--dark); margin-bottom: 0.5rem; }
+        .medicine-price { font-size: 1.5rem; color: var(--primary); font-weight: bold; margin-bottom: 1rem; }
+        .quantity-selector { display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; }
+        .quantity-btn { width: 30px; height: 30px; border: 1px solid var(--primary); background: white; color: var(--primary); border-radius: 50%; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .quantity-btn:hover { background: var(--primary); color: white; }
+        .quantity-input { width: 50px; text-align: center; border: 1px solid #e2e8f0; border-radius: 4px; padding: 0.25rem; }
+        .add-to-cart-btn { width: 100%; padding: 0.8rem; background: var(--success); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .add-to-cart-btn:hover, .add-to-cart-btn:focus { background: #059669; transform: translateY(-3px); }
 
-        .cart-container {
-            max-width: 800px;
-            margin: 3rem auto 0;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            transition: background 0.3s;
-        }
-        .cart-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-        }
-        .cart-total {
-            text-align: right;
-            margin-top: 1.5rem;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--dark);
-            padding: 1rem;
-            background: var(--glass);
-            border-radius: 10px;
-        }
+        .cart-container { max-width: 800px; margin: 3rem auto 0; background: var(--glass); backdrop-filter: blur(10px); padding: 2rem; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.1); transition: background 0.3s; }
+        .cart-item:hover { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+        .cart-total { text-align: right; margin-top: 1.5rem; font-size: 1.8rem; font-weight: bold; color: var(--dark); padding: 1rem; background: var(--glass); border-radius: 10px; }
 
-        .delivery-form {
-            max-width: 600px;
-            margin: 3rem auto;
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: var(--dark);
-        }
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
+        .delivery-form { max-width: 600px; margin: 3rem auto; background: white; padding: 2.5rem; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid rgba(0, 0, 0, 0.05); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: var(--dark); }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+        .form-group textarea { resize: vertical; min-height: 100px; }
 
-        .gallery-section {
-            background: linear-gradient(135deg, #f0f9ff, #f5f3ff);
-        }
-        .gallery-controls {
-            text-align: center;
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .filter-btn {
-            padding: 0.5rem 1.5rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 25px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-        .gallery-item {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: all 0.4s;
-            cursor: pointer;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        .gallery-item:hover, .gallery-item:focus-within {
-            transform: translateY(-15px) rotateX(5deg);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-        }
-        .gallery-media {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-        }
-        .gallery-overlay {
-            padding: 1.5rem;
-        }
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: #64748b;
-        }
-        .error {
-            text-align: center;
-            padding: 3rem;
-            color: var(--danger);
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 9999;
-            animation: slideIn 0.5s ease;
-        }
+        .gallery-section { background: linear-gradient(135deg, #f0f9ff, #f5f3ff); }
+        .gallery-controls { text-align: center; margin-bottom: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .filter-btn { padding: 0.5rem 1.5rem; border: 2px solid #e2e8f0; border-radius: 25px; background: white; cursor: pointer; transition: all 0.3s; font-weight: bold; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        .gallery-item { background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); transition: all 0.4s; cursor: pointer; border: 1px solid rgba(0, 0, 0, 0.05); }
+        .gallery-item:hover, .gallery-item:focus-within { transform: translateY(-15px) rotateX(5deg); box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
+        .gallery-media { width: 100%; height: 250px; object-fit: cover; }
+        .gallery-overlay { padding: 1.5rem; }
+        .loading { text-align: center; padding: 3rem; color: #64748b; }
+        .error { text-align: center; padding: 3rem; color: var(--danger); }
+        .notification { position: fixed; top: 20px; right: 20px; padding: 1rem 2rem; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 9999; animation: slideIn 0.5s ease; }
         .notification.success { background: var(--success); color: white; }
         .notification.error { background: var(--danger); color: white; }
         .notification.warning { background: var(--warning); color: white; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .hidden { display: none !important; }
 
-        footer {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            color: white;
-            text-align: center;
-            padding: 3rem 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .social-links {
-            margin: 1.5rem 0;
-        }
-        .social-links a {
-            color: white;
-            font-size: 2rem;
-            margin: 0 1rem;
-            transition: all 0.3s;
-            display: inline-block;
-            text-decoration: none;
-        }
-        .social-links a:hover, .social-links a:focus {
-            color: var(--primary);
-            transform: translateY(-5px) rotateY(180deg);
-        }
+        footer { background: var(--glass); backdrop-filter: blur(10px); color: white; text-align: center; padding: 3rem 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .social-links { margin: 1.5rem 0; }
+        .social-links a { color: white; font-size: 2rem; margin: 0 1rem; transition: all 0.3s; display: inline-block; text-decoration: none; }
+        .social-links a:hover, .social-links a:focus { color: var(--primary); transform: translateY(-5px) rotateY(180deg); }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--glass);
-                backdrop-filter: blur(10px);
-                flex-direction: column;
-                padding: 1rem;
-            }
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--glass); backdrop-filter: blur(10px); flex-direction: column; padding: 1rem; }
             .nav-links.active { display: flex; }
             .mobile-menu-toggle { display: block; }
             .hero h1 { font-size: 2.5rem; }
@@ -516,7 +115,6 @@
     <nav role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <div class="logo">
-                <!-- LOGO WILL BE LOADED FROM FIREBASE SETTINGS -->
                 <div class="logo-img" id="logoDisplay" aria-hidden="true">🏥</div>
                 Baxnaano Hospital
             </div>
@@ -526,7 +124,6 @@
                 <li><a href="#pharmacy">Pharmacy</a></li>
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#delivery">Delivery</a></li>
-                <li><a href="#contact">Contact</a></li>
             </ul>
             <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
         </div>
@@ -571,12 +168,8 @@
         
         <div class="cart-container">
             <h3 style="margin-bottom: 1rem;">Shopping Cart</h3>
-            <div id="cartItems">
-                <p style="text-align: center; color: #64748b;">Your cart is empty</p>
-            </div>
-            <div class="cart-total" id="cartTotal" style="display: none;">
-                Total: <span id="totalPrice">$0</span>
-            </div>
+            <div id="cartItems"><p style="text-align: center; color: #64748b;">Your cart is empty</p></div>
+            <div class="cart-total" id="cartTotal" style="display: none;">Total: <span id="totalPrice">$0</span></div>
         </div>
     </section>
 
@@ -585,39 +178,16 @@
         <h2 class="section-title" id="delivery-title">Medicine Delivery Request</h2>
         <div class="delivery-form">
             <form id="deliveryForm">
-                <div class="form-group">
-                    <label for="customerName">Full Name *</label>
-                    <input type="text" id="customerName" required placeholder="Your full name" aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="customerPhone">Phone Number *</label>
-                    <input type="tel" id="customerPhone" required placeholder="061 349 0055" 
-                           pattern="^(00252|\+252|0)(61|62|65|66|67|68|69|71|72|73|74|77|78|79|90|91|92|93|94|95|96|97|98)\d{6}$" 
-                           title="Valid Somali phone: 061 349 0055 or +252613490055" aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="deliveryAddress">Delivery Address *</label>
-                    <textarea id="deliveryAddress" required placeholder="Full address for delivery..." aria-required="true"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="prescriptionFile">Prescription (Optional)</label>
-                    <input type="file" id="prescriptionFile" accept="image/*" aria-describedby="prescription-help">
-                    <small id="prescription-help">Upload prescription image if required (Max 5MB)</small>
-                </div>
-                <div class="form-group">
-                    <label for="instructions">Special Instructions</label>
-                    <textarea id="instructions" placeholder="e.g., Call on arrival..."></textarea>
-                </div>
+                <div class="form-group"><label for="customerName">Full Name *</label><input type="text" id="customerName" required placeholder="Your full name" aria-required="true"></div>
+                <div class="form-group"><label for="customerPhone">Phone Number *</label><input type="tel" id="customerPhone" required placeholder="061 349 0055" pattern="^(00252|\+252|0)(61|62|65|66|67|68|69|71|72|73|74|77|78|79|90|91|92|93|94|95|96|97|98)\d{6}$" title="Valid Somali phone: 061 349 0055 or +252613490055" aria-required="true"></div>
+                <div class="form-group"><label for="deliveryAddress">Delivery Address *</label><textarea id="deliveryAddress" required placeholder="Full address for delivery..." aria-required="true"></textarea></div>
+                <div class="form-group"><label for="prescriptionFile">Prescription (Optional)</label><input type="file" id="prescriptionFile" accept="image/*" aria-describedby="prescription-help"><small id="prescription-help">Upload prescription image if required (Max 5MB)</small></div>
+                <div class="form-group"><label for="instructions">Special Instructions</label><textarea id="instructions" placeholder="e.g., Call on arrival..."></textarea></div>
                 <button type="submit" class="btn btn-block" id="submitOrderBtn">🚚 Request Delivery</button>
             </form>
-            <!-- DYNAMIC USSD PAYMENT LINK -->
             <div style="text-align: center; margin-top: 1rem;">
-                <a href="#" id="ussdPaymentLink" class="btn" style="background: var(--success); display: none;">
-                    💳 Click to Pay: *712*684006666*<span id="ussdAmount">0</span>#
-                </a>
-                <p style="font-size: 0.9rem; color: #64748b; margin-top: 0.5rem;" id="ussdInstructions">
-                    Submit order first, then click to complete payment
-                </p>
+                <a href="#" id="ussdPaymentLink" class="btn" style="background: var(--success); display: none;">💳 Click to Pay: *712*684006666*<span id="ussdAmount">0</span>#</a>
+                <p style="font-size: 0.9rem; color: #64748b; margin-top: 0.5rem;" id="ussdInstructions">Submit order first, then click to complete payment</p>
             </div>
         </div>
     </section>
@@ -636,12 +206,10 @@
     <!-- FOOTER -->
     <footer role="contentinfo">
         <div class="logo" style="color: white; font-size: 2rem; margin-bottom: 1rem;">
-            <!-- LOGO WILL BE LOADED FROM FIREBASE SETTINGS -->
             <div class="logo-img" id="footerLogoDisplay" style="display: inline-block; margin-right: 0.5rem;" aria-hidden="true">🏥</div>
             Baxnaano Hospital & Pharmacy
         </div>
         <p style="opacity: 0.8; margin-bottom: 1rem;">Healthcare Excellence in Somalia</p>
-        
         <div class="social-links">
             <a href="https://wa.me/252613490055" title="WhatsApp" aria-label="WhatsApp">💬</a>
             <a href="tel:+252613490055" title="Hospital" aria-label="Hospital Phone">📞</a>
@@ -650,28 +218,27 @@
             <a href="https://www.facebook.com/share/15RSaXLD1f3/" title="Facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook">📘</a>
             <a href="https://youtube.com/@bahnanohospital" title="YouTube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">📺</a>
         </div>
-        
         <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">
             📍 Zoobe-Opposite to Hayat Supermarket, Mogadishu<br>
             Baxnaano Hospital & Pharmacy. All Rights Reserved.
         </p>
     </footer>
 
-    <!-- FIREBASE SDK -->
+    <!-- ===== 🔑 FIREBASE CONFIG SECTION - KU DARI HAGAAGKAAGA Halkan ===== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-        // === REPLACE WITH YOUR ACTUAL FIREBASE CONFIG ===
-        // Get this from Firebase Console > Project Settings > General > Your apps
+        // TODO: KU DARI HAGAAGKAAGA FIIREBASE KA Halkan
+        // Ka heli: Firebase Console > Project Settings > General > Your apps
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY_HERE",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "YOUR_API_KEY_HERE",           // <--- BADAL
+            authDomain: "YOUR_PROJECT.firebaseapp.com", // <--- BADAL
+            projectId: "YOUR_PROJECT_ID",         // <--- BADAL
+            storageBucket: "YOUR_PROJECT.appspot.com", // <--- BADAL
+            messagingSenderId: "YOUR_SENDER_ID", // <--- BADAL
+            appId: "YOUR_APP_ID"                   // <--- BADAL
         };
 
         const app = initializeApp(firebaseConfig);
@@ -696,7 +263,6 @@
             
             async saveOrder(order, prescriptionFile) {
                 try {
-                    // Upload prescription to Storage if exists
                     let prescriptionUrl = null;
                     if (prescriptionFile) {
                         const storageRef = ref(storage, `prescriptions/${Date.now()}_${prescriptionFile.name}`);
@@ -707,7 +273,8 @@
                     return await addDoc(this.orders, {
                         ...order,
                         prescription: prescriptionUrl,
-                        timestamp: new Date().toISOString()
+                        timestamp: new Date().toISOString(),
+                        status: 'PENDING'
                     });
                 } catch (error) {
                     console.error("Error saving order:", error);
@@ -736,14 +303,12 @@
             }
         };
 
-        // Real-time listeners
         onSnapshot(collection(db, 'medicines'), () => window.app?.loadMedicines());
         onSnapshot(collection(db, 'gallery'), () => window.app?.loadGallery());
         onSnapshot(collection(db, 'settings'), () => window.app?.loadSettings());
     </script>
 
     <script>
-        // === MAIN APPLICATION CLASS ===
         class HospitalApp {
             constructor() {
                 this.cart = this.loadCartFromStorage();
@@ -752,21 +317,14 @@
             }
 
             initEventListeners() {
-                // Mobile menu toggle
                 const mobileMenuBtn = document.getElementById('mobileMenuToggle');
                 mobileMenuBtn?.addEventListener('click', () => this.toggleMenu());
-
-                // Delivery form submission
                 const deliveryForm = document.getElementById('deliveryForm');
                 deliveryForm?.addEventListener('submit', (e) => this.submitDelivery(e));
-
-                // Gallery filter buttons
                 const filterBtns = document.querySelectorAll('.filter-btn');
                 filterBtns.forEach(btn => {
                     btn.addEventListener('click', (e) => this.filterGallery(e, btn.dataset.filter));
                 });
-
-                // Close mobile menu on link click
                 const navLinks = document.querySelectorAll('.nav-links a');
                 navLinks.forEach(link => {
                     link.addEventListener('click', () => {
@@ -774,8 +332,6 @@
                         document.getElementById('mobileMenuToggle').setAttribute('aria-expanded', 'false');
                     });
                 });
-
-                // Load logo on start
                 this.loadSettings();
             }
 
@@ -805,12 +361,10 @@
                 const grid = document.getElementById('medicineGrid');
                 try {
                     const medicines = await DataManager.getMedicines();
-                    
                     if (medicines.length === 0) {
                         grid.innerHTML = '<p class="error">No medicines available at the moment.</p>';
                         return;
                     }
-                    
                     grid.innerHTML = medicines.map(med => `
                         <div class="medicine-card">
                             <div class="medicine-image">
@@ -831,7 +385,6 @@
                             </div>
                         </div>
                     `).join('');
-                    
                     this.attachMedicineEventListeners();
                 } catch (error) {
                     grid.innerHTML = `<p class="error">${error.message}</p>`;
@@ -864,14 +417,12 @@
             addToCart(medicine) {
                 const quantitySelector = document.querySelector(`.quantity-input[data-id="${medicine.id}"]`);
                 const quantity = parseInt(quantitySelector?.value) || 1;
-                
                 const existingItem = this.cart.find(item => item.id === medicine.id);
                 if (existingItem) {
                     existingItem.quantity += quantity;
                 } else {
                     this.cart.push({ ...medicine, quantity, cartId: Date.now() });
                 }
-                
                 this.saveCartToStorage();
                 this.updateCartDisplay();
                 this.showNotification(`✅ ${this.escapeHtml(medicine.name)} added to cart!`, 'success');
@@ -887,14 +438,12 @@
                 const cartItems = document.getElementById('cartItems');
                 const cartTotal = document.getElementById('cartTotal');
                 const totalPrice = document.getElementById('totalPrice');
-                
                 if (this.cart.length === 0) {
                     cartItems.innerHTML = '<p style="text-align: center; color: #64748b;">Your cart is empty</p>';
                     cartTotal.style.display = 'none';
                     this.updateUSSDLink(0);
                     return;
                 }
-                
                 cartItems.innerHTML = this.cart.map((item, index) => `
                     <div class="cart-item">
                         <div>
@@ -905,16 +454,12 @@
                         <button class="btn" data-remove="${index}" style="background: var(--danger); padding: 0.5rem 1rem;">Remove</button>
                     </div>
                 `).join('');
-                
                 document.querySelectorAll('[data-remove]').forEach(btn => {
                     btn.addEventListener('click', () => this.removeFromCart(parseInt(btn.dataset.remove)));
                 });
-                
                 const total = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 totalPrice.textContent = `$${total.toFixed(2)}`;
                 cartTotal.style.display = 'block';
-                
-                // UPDATE USSD LINK DYNAMICALLY
                 this.updateUSSDLink(total);
             }
 
@@ -922,9 +467,8 @@
                 const ussdLink = document.getElementById('ussdPaymentLink');
                 const ussdAmount = document.getElementById('ussdAmount');
                 const ussdInstructions = document.getElementById('ussdInstructions');
-                
                 if (amount > 0) {
-                    const cleanAmount = Math.round(amount); // USSD doesn't support decimals
+                    const cleanAmount = Math.round(amount);
                     ussdAmount.textContent = cleanAmount;
                     ussdLink.href = `tel:*712*684006666*${cleanAmount}#`;
                     ussdLink.style.display = 'inline-block';
@@ -938,12 +482,10 @@
             async submitDelivery(event) {
                 event.preventDefault();
                 const submitBtn = document.getElementById('submitOrderBtn');
-                
                 if (this.cart.length === 0) {
                     this.showNotification('❌ Your cart is empty! Add medicines first.', 'error');
                     return;
                 }
-                
                 const delivery = {
                     customerName: document.getElementById('customerName').value.trim(),
                     customerPhone: document.getElementById('customerPhone').value.trim(),
@@ -953,42 +495,28 @@
                     totalAmount: this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
                     status: 'PENDING'
                 };
-                
-                // Validate phone number
                 const phonePattern = /^(00252|\+252|0)(61|62|65|66|67|68|69|71|72|73|74|77|78|79|90|91|92|93|94|95|96|97|98)\d{6}$/;
                 if (!phonePattern.test(delivery.customerPhone)) {
                     this.showNotification('❌ Please enter a valid Somali phone number', 'error');
                     return;
                 }
-                
-                // Disable button to prevent double submission
                 submitBtn.disabled = true;
                 submitBtn.textContent = '⏳ Submitting...';
-                
                 try {
                     const prescriptionFile = document.getElementById('prescriptionFile').files[0];
-                    
-                    // Validate prescription file size
                     if (prescriptionFile && prescriptionFile.size > 5 * 1024 * 1024) {
                         throw new Error('Prescription file too large! Max 5MB');
                     }
-                    
                     await DataManager.saveOrder(delivery, prescriptionFile);
-                    
                     this.showNotification(
                         `✅ Order submitted!\n💳 Total: $${delivery.totalAmount.toFixed(2)}\n📞 You will receive a call shortly`,
                         'success'
                     );
-                    
-                    // Clear cart and form
                     this.cart = [];
                     this.saveCartToStorage();
                     this.updateCartDisplay();
                     document.getElementById('deliveryForm').reset();
-                    
-                    // Show USSD payment link
                     this.updateUSSDLink(delivery.totalAmount);
-                    
                 } catch (error) {
                     this.showNotification(`❌ ${error.message}`, 'error');
                 } finally {
@@ -1001,12 +529,10 @@
                 const galleryGrid = document.getElementById('galleryGrid');
                 try {
                     const gallery = await DataManager.getGallery();
-                    
                     if (gallery.length === 0) {
                         galleryGrid.innerHTML = '<p class="error">Gallery is empty.</p>';
                         return;
                     }
-                    
                     galleryGrid.innerHTML = gallery.map(item => `
                         <div class="gallery-item" data-type="${item.type}">
                             ${item.type === 'image' 
@@ -1032,7 +558,6 @@
                 });
                 event.target.classList.add('active');
                 event.target.setAttribute('aria-pressed', 'true');
-                
                 const items = document.querySelectorAll('.gallery-item');
                 items.forEach(item => {
                     item.style.display = (type === 'all' || item.dataset.type === type) ? 'block' : 'none';
@@ -1051,9 +576,7 @@
                 notification.setAttribute('aria-live', 'polite');
                 notification.className = `notification ${type}`;
                 notification.textContent = message;
-                
                 document.body.appendChild(notification);
-                
                 setTimeout(() => {
                     notification.style.animation = 'fadeOut 0.5s ease';
                     setTimeout(() => notification.remove(), 500);
@@ -1079,7 +602,6 @@
             }
         }
 
-        // Initialize application
         window.app = new HospitalApp();
         window.addEventListener('DOMContentLoaded', () => window.app.init());
     </script>
