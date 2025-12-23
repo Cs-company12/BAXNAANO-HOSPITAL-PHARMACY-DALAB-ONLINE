@@ -75,12 +75,6 @@
             justify-content: center;
             color: white;
             font-size: 1.5rem;
-            overflow: hidden;
-        }
-        .logo-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
         .nav-links {
             display: flex;
@@ -472,10 +466,7 @@
     <nav>
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-img">
-                    <!-- <img src="https://scontent.xx.fbcdn.net/YOUR_LOGO_URL" alt="Baxnaano Hospital"> -->
-                    🏥
-                </div>
+                <div class="logo-img">🏥</div>
                 Baxnaano Hospital
             </div>
             <ul class="nav-links" id="navLinks">
@@ -583,9 +574,7 @@
     <!-- FOOTER -->
     <footer>
         <div class="logo" style="color: white; font-size: 2rem; margin-bottom: 1rem;">
-            <div class="logo-img" style="display: inline-block; margin-right: 0.5rem;">
-                <!-- <img src="logo.png" alt="Baxnaano"> --> 🏥
-            </div>
+            <div class="logo-img" style="display: inline-block; margin-right: 0.5rem;">🏥</div>
             Baxnaano Hospital & Pharmacy
         </div>
         <p style="opacity: 0.8; margin-bottom: 1rem;">Healthcare Excellence in Somalia</p>
@@ -599,28 +588,107 @@
             <a href="https://youtube.com/@bahnanohospital" title="YouTube" target="_blank" rel="noopener noreferrer">📺</a>
         </div>
         
-        <!-- LA SAXAY: Copyright-ka la qaaday -->
         <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">
             📍 Zoobe-Opposite to Hayat Supermarket, Mogadishu<br>
             Baxnaano Hospital & Pharmacy. All Rights Reserved.
         </p>
     </footer>
 
-    <script>
-        // === SAMPLE MEDICINES ===
-        const sampleMedicines = [
-            { id: 1, name: 'Panadol Extra', price: 5.99, description: 'Pain relief tablets (500mg)', image: null },
-            { id: 2, name: 'Amoxicillin', price: 12.50, description: 'Antibiotic capsules (250mg)', image: null },
-            { id: 3, name: 'Vitamin C', price: 8.75, description: 'Immune booster (1000mg)', image: null },
-            { id: 4, name: 'Cough Syrup', price: 15.00, description: 'For cough relief (150ml)', image: null },
-            { id: 5, name: 'Blood Pressure Monitor', price: 45.99, description: 'Digital BP monitor device', image: null },
-            { id: 6, name: 'Insulin', price: 35.50, description: 'Diabetes medication (10ml)', image: null }
-        ];
+    <!-- FIREBASE SDK -->
+    <script type="module">
+        // TODO: Add your Firebase config here
+        // 1. Go to firebase.google.com
+        // 2. Create project → Build → Firestore Database
+        // 3. Go to Project Settings → General → Add app (Web)
+        // 4. Copy config object and paste below
 
-        // === LOAD MEDICINES ===
-        function loadMedicines() {
-            const medicines = JSON.parse(localStorage.getItem('pharmacyMedicines') || JSON.stringify(sampleMedicines));
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Global data manager for Firebase
+        window.DataManager = {
+            medicines: collection(db, 'medicines'),
+            deliveries: collection(db, 'orders'),
+            gallery: collection(db, 'gallery'),
+            
+            async getMedicines() {
+                const snapshot = await getDocs(this.medicines);
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            },
+            
+            async saveMedicine(medicine) {
+                await addDoc(this.medicines, medicine);
+            },
+            
+            async updateMedicine(id, medicine) {
+                await updateDoc(doc(db, 'medicines', id), medicine);
+            },
+            
+            async deleteMedicine(id) {
+                await deleteDoc(doc(db, 'medicines', id));
+            },
+            
+            async getOrders() {
+                const q = query(this.deliveries, orderBy('timestamp', 'desc'));
+                const snapshot = await getDocs(q);
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            },
+            
+            async saveOrder(order) {
+                await addDoc(this.deliveries, order);
+            },
+            
+            async updateOrder(id, status) {
+                await updateDoc(doc(db, 'orders', id), { status });
+            },
+            
+            async deleteOrder(id) {
+                await deleteDoc(doc(db, 'orders', id));
+            },
+            
+            async getGallery() {
+                const snapshot = await getDocs(this.gallery);
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            },
+            
+            async saveGalleryItem(item) {
+                await addDoc(this.gallery, item);
+            }
+        };
+
+        // Real-time listeners (multi-device sync)
+        onSnapshot(collection(db, 'medicines'), () => loadMedicines());
+        onSnapshot(query(collection(db, 'orders'), orderBy('timestamp', 'desc')), () => {
+            loadDeliveries();
+            updateStats();
+        });
+        onSnapshot(collection(db, 'gallery'), () => loadGallery());
+
+        // Rest of your app code...
+        // (Paste the rest of the script here - see below)
+    </script>
+
+    <script>
+        // === CART SYSTEM ===
+        let cart = [];
+
+        async function loadMedicines() {
+            const medicines = await DataManager.getMedicines();
             const grid = document.getElementById('medicineGrid');
+            
+            if (!grid) return;
             
             grid.innerHTML = medicines.map(med => `
                 <div class="medicine-card">
@@ -636,9 +704,6 @@
                 </div>
             `).join('');
         }
-
-        // === CART SYSTEM ===
-        let cart = [];
 
         function addToCart(medicine) {
             cart.push({ ...medicine, cartId: Date.now() });
@@ -678,7 +743,7 @@
         }
 
         // === SUBMIT DELIVERY ===
-        function submitDelivery(event) {
+        async function submitDelivery(event) {
             event.preventDefault();
             
             if (cart.length === 0) {
@@ -687,7 +752,6 @@
             }
             
             const delivery = {
-                id: 'BAX-' + Date.now(),
                 customerName: document.getElementById('customerName').value,
                 customerPhone: document.getElementById('customerPhone').value,
                 deliveryAddress: document.getElementById('deliveryAddress').value,
@@ -695,38 +759,36 @@
                 medicines: [...cart],
                 totalAmount: cart.reduce((sum, item) => sum + item.price, 0),
                 status: 'PENDING',
-                timestamp: new Date().toLocaleString('so-SO')
+                timestamp: new Date().toISOString()
             };
             
             const prescriptionFile = document.getElementById('prescriptionFile').files[0];
             if (prescriptionFile) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = async function(e) {
                     delivery.prescription = e.target.result;
-                    saveDelivery(delivery, event);
+                    await DataManager.saveOrder(delivery);
+                    alert(`✅ Order submitted!\n💳 Dial: *712684006666*#$${delivery.totalAmount.toFixed(2)}`);
+                    cart = [];
+                    updateCartDisplay();
+                    event.target.reset();
                 };
                 reader.readAsDataURL(prescriptionFile);
             } else {
-                saveDelivery(delivery, event);
+                await DataManager.saveOrder(delivery);
+                alert(`✅ Order submitted!\n💳 Dial: *712684006666*#$${delivery.totalAmount.toFixed(2)}`);
+                cart = [];
+                updateCartDisplay();
+                event.target.reset();
             }
         }
 
-        function saveDelivery(delivery, event) {
-            let deliveries = JSON.parse(localStorage.getItem('pharmacyDeliveries') || '[]');
-            deliveries.unshift(delivery);
-            localStorage.setItem('pharmacyDeliveries', JSON.stringify(deliveries));
-            
-            alert(`✅ Order #${delivery.id} submitted!\n\nTotal: $${delivery.totalAmount.toFixed(2)}\n📞 We will call you at ${delivery.customerPhone}\n🚚 Delivery in 2-4 hours.\n\n💳 Payment: Dial *712684006666*#$${delivery.totalAmount.toFixed(2)} then call us to confirm.`);
-            
-            cart = [];
-            updateCartDisplay();
-            event.target.reset();
-        }
-
         // === GALLERY ===
-        function loadGallery() {
-            const gallery = JSON.parse(localStorage.getItem('hospitalGallery') || '[]');
+        async function loadGallery() {
+            const gallery = await DataManager.getGallery();
             const galleryGrid = document.getElementById('galleryGrid');
+            
+            if (!galleryGrid) return;
             
             if (gallery.length === 0) {
                 galleryGrid.innerHTML = '<p style="text-align: center; padding: 3rem; color: #64748b;">Gallery is empty</p>';
@@ -765,10 +827,10 @@
         }
 
         // === INIT ===
-        window.onload = function() {
-            loadMedicines();
+        window.onload = async function() {
+            await loadMedicines();
             updateCartDisplay();
-            loadGallery();
+            await loadGallery();
         };
     </script>
 </body>
